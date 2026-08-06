@@ -1,6 +1,7 @@
-show databases;
-create database BankingDB ;
+create database BankingDB;
 use BankingDB;
+
+show databases;
 
 CREATE TABLE Customers (
     CustomerID INT PRIMARY KEY,
@@ -43,12 +44,15 @@ CREATE TABLE Loans (
     EndDate DATE
 );
 
-
 ALTER TABLE Customers
 ADD DateOfBirth DATE;
 
+select * from Customers;
+
 ALTER TABLE Customers
 MODIFY Phone VARCHAR(20);
+
+select * from Customers;
 
 ALTER TABLE Accounts
 ADD CONSTRAINT chk_MinBalance
@@ -60,11 +64,40 @@ ALTER TABLE Accounts
 ADD CustomerID INT;
 
 ALTER TABLE Accounts
-ADD CustomerID INT;
+ADD CONSTRAINT FK_Accounts_Customers
+FOREIGN KEY (CustomerID)
+REFERENCES Customers(CustomerID);
 
--- Step 1: Add the column
-ALTER TABLE Accounts ADD CustomerID INT;
+ALTER TABLE Customers
+MODIFY FirstName VARCHAR(50) NOT NULL;
 
--- Step 2: Add the foreign key
-ALTER TABLE Accounts 
-ADD FOREIGN KEY (CustomerID) REFERENCES Customers(CustomerID);
+ALTER TABLE Customers
+ADD CONSTRAINT uq_Email UNIQUE (Email);
+
+select * from Accounts ;
+
+
+ALTER TABLE Customers
+ADD CONSTRAINT uq_Customer_CreationDate UNIQUE (AccountCreationDate);
+
+
+ALTER TABLE Accounts
+ADD CONSTRAINT fk_Accounts_Customers_Date
+FOREIGN KEY (AccountCreationDate)
+REFERENCES Customers (AccountCreationDate);
+
+select * from Transactions;
+
+ALTER TABLE Loans
+ADD AccountID INT ;
+
+ALTER TABLE Accounts
+ADD constraint KK_Accounts_ID primary key(AccountID);
+
+ALTER TABLE Loans 
+ADD CONSTRAINT fk_Loans_Accounts 
+FOREIGN KEY (AccountID)
+references Accounts(AccountID);
+
+
+
